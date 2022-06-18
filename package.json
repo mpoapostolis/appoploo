@@ -26,6 +26,8 @@
   },
   "packageManager": "npm@7.20.3",
   "dependencies": {
+    "axios": "^0.27.2",
+    "clsx": "^1.1.1",
     "daisyui": "^2.15.4"
   }
 }
