@@ -14,13 +14,15 @@ export const Map = () => {
         lng: 23.5061835,
         lat: 38.0,
       },
-      style: "mapbox://styles/mpoapostolis/cl4lehet9003a14mtd5su73hq",
+
+      style: "mapbox://styles/mapbox/streets-v11",
+      //   style: "mapbox://styles/mpoapostolis/cl4lehet9003a14mtd5su73hq",
       zoom: 12,
     });
   }, []);
 
   return (
-    <div className="w-full  h-screen overflow-hidden relative">
+    <div className="w-full md:h-screen h-[94vh] overflow-hidden relative">
       <div className="w-full h-full z-40" id="map" />
     </div>
   );

@@ -25,10 +25,7 @@ export function Login(props: { bg: string }) {
         >
           <div className="absolute bg-black opacity-10 inset-0 z-0" />
         </div>
-        <div
-          className="lg:w-1/2 w-full flex items-center justify-center text-center md:px-16 px-0 z-0"
-          style={{ backgroundColor: "#161616" }}
-        >
+        <div className="lg:w-1/2 w-full flex items-center bg-base-300 justify-center text-center md:px-16 px-0 z-0">
           <div className="w-full py-6 z-20 flex flex-col  items-center">
             <h1 className="my-6 text-6xl font-bold text-zinc-200 shadow-2xl">
               Appoploo
