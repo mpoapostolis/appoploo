@@ -4,9 +4,9 @@ import { Map } from "../map";
 
 export function Layout(props: { children: ReactNode }) {
   return (
-    <div className="flex">
+    <div className="flex h-screen">
       <Drawer />
-      <Map>{props.children}</Map>
+      <div className="w-full">{props.children}</div>
     </div>
   );
 }

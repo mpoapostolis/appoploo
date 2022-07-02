@@ -5,7 +5,7 @@ import "mapbox-gl/dist/mapbox-gl.css";
 mapboxgl.accessToken =
   "pk.eyJ1IjoibXBvYXBvc3RvbGlzIiwiYSI6ImNraWNhYjlvMjBpN3MycXBlN3Y1dTRuencifQ.n6ohBfLI_yGS7kjg92XMow";
 
-export const Map = (props: { children: ReactNode }) => {
+export const Map = () => {
   useEffect(() => {
     new mapboxgl.Map({
       container: "map",
@@ -20,12 +20,8 @@ export const Map = (props: { children: ReactNode }) => {
   }, []);
 
   return (
-    <div className="w-full h-screen overflow-hidden relative">
-      <div className="w-full h-full" id="map" />
-      <div className="z-50">
-        {props.children}
-        <h1>asdasdads</h1>
-      </div>
+    <div className="w-full  h-screen overflow-hidden relative">
+      <div className="w-full h-full z-40" id="map" />
     </div>
   );
 };

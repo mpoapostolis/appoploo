@@ -1,21 +1,26 @@
 import clsx from "clsx";
 import Link from "next/link";
 import { useRouter } from "next/router";
-import { ReactNode } from "react";
+import { motion } from "framer-motion";
 
 function MenuItem(props: { src: string; goTo: string; className?: string }) {
   const router = useRouter();
-  const isActive = router.pathname === props.goTo ? "55a" : "888";
+  const isActive = router.pathname === props.goTo;
+  const iconColor = isActive ? "eee" : "888";
   console.log(router.pathname, props.goTo);
   return (
     <Link href={props.goTo}>
       <a
         className={clsx(
-          "w-full items-center h-16 justify-center flex",
-          props.className
+          "w-full items-center h-12 justify-center flex",
+          props.className,
+
+          {
+            "bg-white bg-opacity-5 border-y border-base-100": isActive,
+          }
         )}
       >
-        <img src={`${props.src}&color=${isActive}`} alt="" />
+        <img src={`${props.src}&color=${iconColor}`} alt="" />
       </a>
     </Link>
   );
@@ -23,21 +28,22 @@ function MenuItem(props: { src: string; goTo: string; className?: string }) {
 
 export function Drawer() {
   return (
-    <div className=" border-r shadow border-base-100 flex flex-col bg-base-300  w-16 py-4">
+    <div className=" border-r  shadow border-base-100    flex flex-col bg-base-300  w-12 pt-2">
       <Link href="/">
-        <a className="w-full h-16 rotate-90  items-center   justify-center flex">
+        <a className="w-full h-12 rotate-90  items-center   justify-center flex">
           <img src={`/logo.png`} alt="" />
         </a>
       </Link>
       <div className="divider mb-auto" />
-
       <MenuItem
-        className="rotate-45"
         src="https://s2.svgbox.net/materialui.svg?ic=navigation"
         goTo="/"
       />
 
-      <MenuItem src="https://s2.svgbox.net/materialui.svg?ic=map" goTo="/map" />
+      <MenuItem
+        src="https://s2.svgbox.net/materialui.svg?ic=notifications"
+        goTo="/notifications"
+      />
 
       <div className="divider mt-auto" />
 
