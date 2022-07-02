@@ -10,9 +10,11 @@
     "build": "turbo run build",
     "dev": "turbo run dev --parallel",
     "lint": "turbo run lint",
-    "format": "prettier --write \"**/*.{ts,tsx,md}\""
+    "format": "prettier --write \"**/*.{ts,tsx,md}\"",
+    "deploy": "turbo run build --scope=apps"
   },
   "devDependencies": {
+    "@types/mapbox-gl": "^2.7.3",
     "autoprefixer": "^10.4.7",
     "eslint-config-custom": "latest",
     "postcss": "^8.4.14",
@@ -28,6 +30,7 @@
   "dependencies": {
     "axios": "^0.27.2",
     "clsx": "^1.1.1",
-    "daisyui": "^2.15.4"
+    "daisyui": "^2.15.4",
+    "mapbox-gl": "^2.9.1"
   }
 }
