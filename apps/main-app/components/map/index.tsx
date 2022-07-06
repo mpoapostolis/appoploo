@@ -1,6 +1,7 @@
 import mapboxgl from "mapbox-gl";
 import { ReactNode, useEffect } from "react";
 import "mapbox-gl/dist/mapbox-gl.css";
+import { VehicleCard } from "../vehicleCard";
 
 mapboxgl.accessToken =
   "pk.eyJ1IjoibXBvYXBvc3RvbGlzIiwiYSI6ImNraWNhYjlvMjBpN3MycXBlN3Y1dTRuencifQ.n6ohBfLI_yGS7kjg92XMow";
@@ -22,7 +23,7 @@ export const Map = () => {
   }, []);
 
   return (
-    <div className="w-full md:h-screen h-[94vh] overflow-hidden">
+    <div className="w-full md:h-screen h-[94vh] overflow-hidde">
       <div className="drawer  drawer-end z-50">
         <input id="my-drawer" type="checkbox" className="drawer-toggle" />
         <div className="drawer-content h-full">
@@ -41,15 +42,34 @@ export const Map = () => {
         </div>
         <div className="drawer-side">
           <label htmlFor="my-drawer" className="drawer-overlay"></label>
-          <ul className="menu p-4 overflow-y-auto w-80 bg-base-100 text-base-content">
-            <li>
-              <a className="rounded-full hover:rounded-full border">
-                Sidebar Item 1
-              </a>
-            </li>
-            <li>
-              <a className="rounded-none">Sidebar Item 2</a>
-            </li>
+          <ul className="px-4 py-4 bg-base-100 w-80">
+            <VehicleCard />
+            <div className="divider"></div>
+
+            <VehicleCard />
+            <div className="divider"></div>
+            <VehicleCard />
+            <div className="divider"></div>
+            <VehicleCard />
+            <div className="divider"></div>
+            <VehicleCard />
+            <div className="divider"></div>
+            <VehicleCard />
+            <div className="divider"></div>
+            <VehicleCard />
+            <div className="divider"></div>
+            <VehicleCard />
+            <div className="divider"></div>
+            <VehicleCard />
+            <div className="divider"></div>
+            <VehicleCard />
+            <div className="divider"></div>
+            <VehicleCard />
+            <div className="divider"></div>
+            <VehicleCard />
+            <div className="divider"></div>
+            <VehicleCard />
+            <div className="divider"></div>
           </ul>
         </div>
       </div>

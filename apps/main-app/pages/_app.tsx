@@ -1,9 +1,7 @@
 import type { AppProps } from "next/app";
 import { useRouter } from "next/router";
-import { useEffect } from "react";
 
 import { Layout } from "../components/layout";
-import { useStore } from "../store";
 import "../styles/global.css";
 
 function MyApp({ Component, pageProps }: AppProps) {
