@@ -32,7 +32,7 @@ export function Drawer() {
         goTo="/"
       />
 
-      <div className="divider md:mb-auto mx-auto md:w-full" />
+      <div className=" md:mb-auto mx-auto md:w-full" />
       <MenuItem
         src="https://s2.svgbox.net/materialui.svg?ic=navigation"
         goTo="/tracking"
