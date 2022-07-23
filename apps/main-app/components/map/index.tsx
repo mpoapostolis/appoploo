@@ -62,7 +62,34 @@ export const Map = () => {
   }, [map, vehicles]);
 
   return (
-    <div className="w-full md:h-screen h-[94vh] overflow-hidde">
+    <div className="w-full md:h-screen h-[94vh] relative overflow-hidden">
+      <div className="grid grid-cols-2 absolute top-0 w-full z-50 left-0">
+        <div className="border-r  border-white border-opacity-10  bg-base-100">
+          <select className="select focus:outline-none rounded-none w-full">
+            <option disabled selected>
+              Select Vehicle
+            </option>
+            <option>Han Solo</option>
+            <option>Greedo</option>
+          </select>
+        </div>
+        <div className="border-r  border-white border-opacity-10  bg-base-100">
+          <select className="select focus:outline-none rounded-none w-full">
+            <option disabled selected>
+              show routes from last n days
+            </option>
+            <option>Last 1 day routes</option>
+            <option>Last 2 days routes</option>
+            <option>Last 3 days routes</option>
+            <option>Last 1 week routes</option>
+            <option>Last 2 weeks routes</option>
+            <option>Last 3 weeks routes</option>
+            <option>Last 1 month routes</option>
+            <option>Last 2 months routes</option>
+            <option>Last 3 months routes</option>
+          </select>
+        </div>
+      </div>
       <div className="w-full  h-full relative" id="map"></div>
     </div>
   );

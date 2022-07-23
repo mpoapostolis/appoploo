@@ -26,7 +26,7 @@ function MenuItem(props: { src: string; goTo: string; className?: string }) {
 
 export function Drawer() {
   return (
-    <div className="border-base-100 sticky top-0 z-50 flex md:flex-col bg-base-200  xs:w-full md:w-12 h-12 md:h-full md:pt-2 md:h-screen">
+    <div className="border-base-100 sticky top-0 z-50 flex md:flex-col bg-base-200  xs:w-full md:w-12 h-12 md:pt-2 md:h-screen">
       <MenuItem
         src="https://s2.svgbox.net/illlustrations.svg?ic=whale"
         goTo="/"
@@ -34,11 +34,13 @@ export function Drawer() {
 
       <div className=" md:mb-auto mx-auto md:w-full" />
       <MenuItem
+        className="lg:hidden"
         src="https://s2.svgbox.net/materialui.svg?ic=navigation"
         goTo="/tracking"
       />
 
       <MenuItem
+        className="lg:hidden"
         src="https://s2.svgbox.net/materialui.svg?ic=notifications"
         goTo="/tracking/notifications"
       />

@@ -7,7 +7,7 @@ const Home: NextPage = () => {
   return (
     <div
       className={clsx(
-        "w-full relative h-screen overflow-hidden grid grid-cols-[25vw_1fr]"
+        "w-full relative h-screen overflow-hidden grid xl:grid-cols-[1fr_2fr]"
       )}
     >
       <TimeLine />

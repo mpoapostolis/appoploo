@@ -2,7 +2,7 @@ export default function TimeLineItem() {
   return (
     <div
       role="button"
-      className="grid items-start hover:border-l-4 px-5 hover:px-4  overflow-hidden hover:bg-white hover:bg-opacity-10 border-base-content  grid-cols-[auto_auto_1fr] pb-10 gap-x-8 relative"
+      className="grid items-start hover:border-l-4 px-5 hover:px-4  overflow-hidden border-base-content  grid-cols-[auto_auto_1fr] pb-10 gap-x-8 relative"
     >
       {/* <div className="border-r-4  border-base-100 absolute h-full left-[101px]"></div> */}
       <time className="leading-5 w-full  text-clip flex-col text-sm font-normal  text-gray-400 border-opacity-10 border-white dark:text-gray-500">
@@ -33,22 +33,25 @@ export default function TimeLineItem() {
 
 export function TimeLine() {
   return (
-    <div className="px-4 pt-4">
-      <div className="grid grid-cols-2 gap-x-4">
-        <select className="select w-full   select-bordered  mx-auto">
-          <option disabled selected>
-            Select Vehicle
-          </option>
-          <option>Han Solo</option>
-          <option>Greedo</option>
-        </select>
-        <select className="select w-full   select-bordered  mx-auto">
-          <option disabled selected>
-            Select Period
-          </option>
-          <option>Han Solo</option>
-          <option>Greedo</option>
-        </select>
+    <div className="px-4 pt-4 xl:block hidden">
+      <div className="stats rounded-none">
+        <div className="stat place-items-center">
+          <div className="stat-title">Speed</div>
+          <div className="stat-value">31K</div>
+          <div className="stat-desc">From January 1st to February 1st</div>
+        </div>
+
+        <div className="stat place-items-center">
+          <div className="stat-title">Fuel</div>
+          <div className="stat-value text-secondary">4,200</div>
+          <div className="stat-desc">From January 1st to February 1st</div>
+        </div>
+
+        <div className="stat place-items-center">
+          <div className="stat-title">Distance</div>
+          <div className="stat-value"> 1,200km</div>
+          <div className="stat-desc">From January 1st to February 1st</div>
+        </div>
       </div>
       <div className="divider"></div>
 
