@@ -33,8 +33,32 @@ export default function TimeLineItem() {
 
 export function TimeLine() {
   return (
-    <div className="px-4 pt-4 xl:block hidden">
-      <div className="stats rounded-none">
+    <div className="px-4 pt-4 xl:block hidden ">
+      <div className="grid grid-cols-2 w-full gap-x-1">
+        <select className="select focus:outline-none bg-base-300 rounded-none w-full">
+          <option disabled selected>
+            Select Vehicle
+          </option>
+          <option>Han Solo</option>
+          <option>Greedo</option>
+        </select>
+        <select className="select focus:outline-none bg-base-300 rounded-none w-full">
+          <option disabled selected>
+            show routes from last n days
+          </option>
+          <option>Last 1 day routes</option>
+          <option>Last 2 days routes</option>
+          <option>Last 3 days routes</option>
+          <option>Last 1 week routes</option>
+          <option>Last 2 weeks routes</option>
+          <option>Last 3 weeks routes</option>
+          <option>Last 1 month routes</option>
+          <option>Last 2 months routes</option>
+          <option>Last 3 months routes</option>
+        </select>
+      </div>
+
+      <div className="stats rounded-none mt-4 bg-base-300">
         <div className="stat place-items-center">
           <div className="stat-title">Speed</div>
           <div className="stat-value">31K</div>
@@ -53,7 +77,6 @@ export function TimeLine() {
           <div className="stat-desc">From January 1st to February 1st</div>
         </div>
       </div>
-      <div className="divider"></div>
 
       <div
         style={{

@@ -2,6 +2,7 @@ import clsx from "clsx";
 import { NextPage } from "next";
 import { Map } from "../../components/map";
 import { TimeLine } from "../../components/timeline";
+import { withSessionSsr } from "../../lib/withSession";
 
 const Home: NextPage = () => {
   return (
@@ -15,5 +16,26 @@ const Home: NextPage = () => {
     </div>
   );
 };
+
+export const getServerSideProps = withSessionSsr(
+  async function getServerSideProps({ req }) {
+    const user = req.session.user;
+
+    if (user?.admin !== true) {
+      return {
+        redirect: {
+          destination: "/",
+          permanent: false,
+        },
+      };
+    }
+
+    return {
+      props: {
+        user: req.session.user,
+      },
+    };
+  }
+);
 
 export default Home;

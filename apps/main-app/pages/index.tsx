@@ -1,21 +1,18 @@
+import axios from "axios";
+
 export default function Page() {
+  const login = () =>
+    axios.post("/api/auth", {
+      username: "admin",
+      password: "admin",
+      type: "login",
+    });
   return (
     <>
       <div className="navbar bg-base-100">
-        <div className="flex-1">
-          <a className="btn btn-ghost normal-case text-xl">daisyUI</a>
-        </div>
-        <div className="flex-none">
-          <ul className="menu menu-horizontal p-0">
-            <li>
-              <a>Item 1</a>
-            </li>
-
-            <li>
-              <a>Item 3</a>
-            </li>
-          </ul>
-        </div>
+        <button onClick={login} className="btn">
+          login
+        </button>
       </div>
     </>
   );
