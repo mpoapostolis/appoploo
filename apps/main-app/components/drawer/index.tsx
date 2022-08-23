@@ -56,7 +56,7 @@ export function Drawer() {
         src="https://s2.svgbox.net/materialui.svg?ic=account_circle"
         goTo="/tracking/account"
       />
-      <form action="/api/auth?type=logout" method="POST">
+      <form method="POST" action="/api/auth?type=logout">
         <button
           type="submit"
           className="w-12 md:w-full items-center h-12  justify-center flex"

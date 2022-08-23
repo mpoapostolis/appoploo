@@ -6,8 +6,6 @@ export default withSessionRoute(loginRoute);
 async function loginRoute(req: NextApiRequest, res: NextApiResponse) {
   const { email, password } = req.body;
 
-  if (req.method !== "POST")
-    return res.status(405).json({ error: "Method not allowed" });
   switch (req.query.type) {
     case "login":
       req.session.user = {
@@ -21,8 +19,7 @@ async function loginRoute(req: NextApiRequest, res: NextApiResponse) {
 
     case "logout":
       await req.session.destroy();
-      console.log(`redirect`);
-      res.redirect("/login");
+      res.writeHead(302, { Location: "/login" }).end();
       break;
 
     case "register":
