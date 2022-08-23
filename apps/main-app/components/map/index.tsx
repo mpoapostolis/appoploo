@@ -63,7 +63,7 @@ export const Map = () => {
 
   return (
     <div className="w-full md:h-screen h-[94vh] relative overflow-hidden">
-      <div className="w-full rounded-l-box h-full relative" id="map"></div>
+      <div className="w-full xl:rounded-l-box h-full relative" id="map"></div>
     </div>
   );
 };

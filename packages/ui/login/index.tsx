@@ -13,6 +13,12 @@ export function Login(props: { bg: string }) {
   const router = useRouter();
   const [err, setErr] = useState<Record<string, string>>({});
   const [load, setLoad] = useState(false);
+  const login = () =>
+    axios.post("/api/auth", {
+      username: "admin",
+      password: "admin",
+      type: "login",
+    });
 
   return (
     <>
@@ -31,24 +37,22 @@ export function Login(props: { bg: string }) {
               Appoploo
             </h1>
             <form
+              method="POST"
+              action="/api/auth?type=login"
               onSubmit={(evt) => {
-                evt.preventDefault();
-                setErr({});
-                if (!userName || !password) return;
-                setLoad(true);
-                axios
-                  .post("/api/login", {
-                    userName,
-                    password,
-                  })
-                  .then((d) => {})
-                  .catch((reason: AxiosError) => {
-                    // const { key, msg } = reason.response?.data;
-                    // if (key === "userName") setUsername("");
-                    // if (key === "password") setPassword("");
-                    // setErr({ [key]: msg });
-                  })
-                  .finally(() => setLoad(false));
+                // evt.preventDefault();
+                // setErr({});
+                // if (!userName || !password) return;
+                // setLoad(true);
+                // login()
+                //   .then((d) => {})
+                //   .catch((reason: AxiosError) => {
+                //     // const { key, msg } = reason.response?.data;
+                //     // if (key === "userName") setUsername("");
+                //     // if (key === "password") setPassword("");
+                //     // setErr({ [key]: msg });
+                //   })
+                //   .finally(() => setLoad(false));
               }}
               className="sm:w-2/3 w-full px-4 lg:px-0 mx-auto"
             >

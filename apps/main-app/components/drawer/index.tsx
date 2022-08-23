@@ -1,3 +1,4 @@
+import axios from "axios";
 import clsx from "clsx";
 import Link from "next/link";
 import { useRouter } from "next/router";
@@ -55,10 +56,17 @@ export function Drawer() {
         src="https://s2.svgbox.net/materialui.svg?ic=account_circle"
         goTo="/tracking/account"
       />
-      <MenuItem
-        src="https://s2.svgbox.net/materialui.svg?ic=logout"
-        goTo="/tracking/account"
-      />
+      <form action="/api/auth?type=logout" method="POST">
+        <button
+          type="submit"
+          className="w-12 md:w-full items-center h-12  justify-center flex"
+        >
+          <img
+            src={`https://s2.svgbox.net/materialui.svg?ic=logout&color=888`}
+            alt=""
+          />
+        </button>
+      </form>
     </div>
   );
 }
