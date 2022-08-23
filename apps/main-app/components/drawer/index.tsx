@@ -55,6 +55,10 @@ export function Drawer() {
         src="https://s2.svgbox.net/materialui.svg?ic=account_circle"
         goTo="/tracking/account"
       />
+      <MenuItem
+        src="https://s2.svgbox.net/materialui.svg?ic=logout"
+        goTo="/tracking/account"
+      />
     </div>
   );
 }

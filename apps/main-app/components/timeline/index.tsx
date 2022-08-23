@@ -20,7 +20,7 @@ export default function TimeLineItem() {
         <div className="h-screen left-4 border-base-100 z-40  border-r-4 absolute "></div>
       </div>
       <div>
-        <h3 className="text-lg mb-2 font-semibold text-gray-900 dark:text-white">
+        <h3 className="text-lg mb-2 font-semibold text-base-content dark:text-white">
           Start
         </h3>
         <p className="  text-base font-normal text-gray-500 dark:text-gray-400">
@@ -94,45 +94,6 @@ export function TimeLine() {
         <TimeLineItem />
         <TimeLineItem />
         <TimeLineItem />
-
-        {/* <ol className="relative">
-          <li className="border-l border-white border-opacity-30 pl-4 pb-6 ">
-            <div className="absolute w-3 h-3 bg-gray-200 rounded-full mt-1.5 -left-1.5 border border-white dark:border-gray-900 dark:bg-gray-700"></div>
-            <h3 className="text-lg font-semibold text-gray-900 dark:text-white">
-              Application UI code in Tailwind CSS
-            </h3>
-            <p className="mb-4 text-base font-normal text-gray-500 dark:text-gray-400">
-              Lorem ipsum dolor sit amet consectetur adipisicing elit. Fugiat obcaecati voluptatibus voluptatum maxime libero numquam eaque quis eligendi quasi accusamus. Dignissimos odit necessitatibus incidunt voluptatum, perferendis reiciendis cupiditate amet dolorem!
-            </p>
-          </li>
-          <li className="border-l border-white border-opacity-30 pl-4 pb-6 ">
-            <div className="absolute w-3 h-3 bg-gray-200 rounded-full mt-1.5 -left-1.5 border border-white dark:border-gray-900 dark:bg-gray-700"></div>
-            <time className="mb-1 text-sm font-normal leading-none text-gray-400 dark:text-gray-500">
-              March 2022
-            </time>
-            <h3 className="text-lg font-semibold text-gray-900 dark:text-white">
-              Marketing UI design in Figma
-            </h3>
-            <p className="text-base font-normal text-gray-500 dark:text-gray-400">
-              All of the pages and components are first designed in Figma and we
-              keep a parity between the two versions even as we update the
-              project.
-            </p>
-          </li>
-          <li className="border-l border-white border-opacity-30 pl-4 pb-6 ">
-            <div className="absolute w-3 h-3 bg-gray-200 rounded-full mt-1.5 -left-1.5 border border-white dark:border-gray-900 dark:bg-gray-700"></div>
-            <time className="mb-1 text-sm font-normal leading-none text-gray-400 dark:text-gray-500">
-              April 2022
-            </time>
-            <h3 className="text-lg font-semibold text-gray-900 dark:text-white">
-              E-Commerce UI code in Tailwind CSS
-            </h3>
-            <p className="text-base font-normal text-gray-500 dark:text-gray-400">
-              Get started with dozens of web components and interactive elements
-              built on top of Tailwind CSS.
-            </p>
-          </li>
-        </ol> */}
       </div>
     </div>
   );

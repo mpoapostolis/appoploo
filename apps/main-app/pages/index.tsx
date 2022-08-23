@@ -1,4 +1,6 @@
+import { GetServerSideProps } from "next";
 import axios from "axios";
+import { withSessionSsr } from "../lib/withSession";
 
 export default function Page() {
   const login = () =>
@@ -17,3 +19,16 @@ export default function Page() {
     </>
   );
 }
+
+export const getServerSideProps: GetServerSideProps = withSessionSsr(
+  async function getServerSideProps({ req }) {
+    const user = req.session.user;
+    console.log(user);
+    return {
+      redirect: {
+        destination: user?.id ? "/tracking" : "/login",
+        permanent: false,
+      },
+    };
+  }
+);
