@@ -1,7 +1,9 @@
 import clsx from "clsx";
 import { useRouter } from "next/router";
+import { Points, usePoints } from "../../lib/points";
+import { format } from "date-fns";
 
-export default function TimeLineItem() {
+export default function TimeLineItem(props: Points) {
   return (
     <div
       role="button"
@@ -9,9 +11,9 @@ export default function TimeLineItem() {
     >
       {/* <div className="border-r-4  border-base-100 absolute h-full left-[101px]"></div> */}
       <time className="leading-5 w-full  text-clip flex-col text-sm font-normal  text-gray-400 border-opacity-10 border-white dark:text-gray-500">
-        <strong>12/01/22</strong>
+        <strong>{format(props.time, "dd/mm/yy")}</strong>
         <br />
-        <span>12:00</span>
+        <span>{format(props.time, "hh:mm")}</span>
       </time>
 
       <div className="relative">
@@ -24,10 +26,10 @@ export default function TimeLineItem() {
       </div>
       <div>
         <h3 className="text-lg mb-2 font-semibold text-base-content dark:text-white">
-          Start
+          {props.event}
         </h3>
         <p className="  text-base font-normal text-gray-500 dark:text-gray-400">
-          Lorem ipsum dolor sit, amet consectetur adipisicing elit. Consequuntur
+          {props.desc}
         </p>
       </div>
     </div>
@@ -45,6 +47,8 @@ export function TimeLine() {
       },
     });
   };
+  const { data: points } = usePoints(q.id);
+
   return (
     <div className="p-4 hidden xl:block ">
       <div
@@ -122,17 +126,10 @@ export function TimeLine() {
         </div>
       </div>
 
-      <div className="mt-4 h-[79vh] py-4  rounded-t-lg   overflow-y-auto rounded bg-base-300   ">
-        <TimeLineItem />
-        <TimeLineItem />
-        <TimeLineItem />
-        <TimeLineItem />
-        <TimeLineItem />
-        <TimeLineItem />
-        <TimeLineItem />
-        <TimeLineItem />
-        <TimeLineItem />
-        <TimeLineItem />
+      <div className="mt-4 h-[79vh] py-4  rounded-t-lg   overflow-y-auto rounded bg-base-300">
+        {points.map((p) => (
+          <TimeLineItem {...p} />
+        ))}
       </div>
     </div>
   );

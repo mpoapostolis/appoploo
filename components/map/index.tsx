@@ -4,14 +4,17 @@ import "mapbox-gl/dist/mapbox-gl.css";
 import { VehicleCard } from "../vehicleCard";
 import { useVehicles } from "../../lib/vehicles";
 import { useRouter } from "next/router";
+import { usePoints } from "../../lib/points";
 
 mapboxgl.accessToken =
   "pk.eyJ1IjoibXBvYXBvc3RvbGlzIiwiYSI6ImNraWNhYjlvMjBpN3MycXBlN3Y1dTRuencifQ.n6ohBfLI_yGS7kjg92XMow";
 
 export const Map = () => {
   const [map, setMap] = useState<mapboxgl.Map | null>(null);
-  const { data: vehicles } = useVehicles();
   const router = useRouter();
+  const { data: vehicles } = useVehicles();
+  const { data: points } = usePoints(router.query.id);
+
   useEffect(() => {
     const map = new mapboxgl.Map({
       container: "map",
