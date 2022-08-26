@@ -6,7 +6,6 @@ let cachedDb: Db | null = null;
 
 export default async function myDb(): Promise<Db> {
   if (cachedDb) return cachedDb;
-  console.log(process.env["MONGO_URI"]);
   const client = await MongoClient.connect(URI);
   const db = await client.db("tracker");
 

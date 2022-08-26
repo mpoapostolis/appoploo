@@ -23,7 +23,6 @@ export default function Page() {
 export const getServerSideProps: GetServerSideProps = withSessionSsr(
   async function getServerSideProps({ req }) {
     const user = req.session.user;
-    console.log(user);
     return {
       redirect: {
         destination: user?.id ? "/tracking" : "/login",
