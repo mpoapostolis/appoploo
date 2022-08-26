@@ -51,12 +51,7 @@ export function TimeLine() {
 
   return (
     <div className="p-4 hidden xl:block ">
-      <div
-        className={clsx("grid  w-full gap-x-0.5", {
-          "grid-cols-2": q.id,
-          "grid-cols-1": !q.id,
-        })}
-      >
+      <div className="grid grid-cols-2  w-full gap-x-0.5">
         <select
           value={q.id}
           onChange={(evt) => {
@@ -128,7 +123,7 @@ export function TimeLine() {
 
       <div className="mt-4 h-[79vh] py-4  rounded-t-lg   overflow-y-auto rounded bg-base-300">
         {points.map((p) => (
-          <TimeLineItem {...p} />
+          <TimeLineItem key={p._id} {...p} />
         ))}
       </div>
     </div>

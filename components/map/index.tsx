@@ -1,5 +1,5 @@
 import mapboxgl from "mapbox-gl";
-import { ReactNode, useEffect, useState } from "react";
+import { ReactNode, useEffect, useRef, useState } from "react";
 import "mapbox-gl/dist/mapbox-gl.css";
 import { VehicleCard } from "../vehicleCard";
 import { useVehicles } from "../../lib/vehicles";
@@ -10,13 +10,14 @@ mapboxgl.accessToken =
   "pk.eyJ1IjoibXBvYXBvc3RvbGlzIiwiYSI6ImNraWNhYjlvMjBpN3MycXBlN3Y1dTRuencifQ.n6ohBfLI_yGS7kjg92XMow";
 
 export const Map = () => {
-  const [map, setMap] = useState<mapboxgl.Map | null>(null);
   const router = useRouter();
-  const { data: vehicles } = useVehicles();
+  const [mapLoad, setMapLoad] = useState(false);
   const { data: points } = usePoints(router.query.id);
+  const _map = useRef<mapboxgl.Map>();
 
   useEffect(() => {
-    const map = new mapboxgl.Map({
+    if (_map.current) return;
+    _map.current = new mapboxgl.Map({
       container: "map",
       pitch: 0, // pitch in degrees
       center: {
@@ -27,42 +28,61 @@ export const Map = () => {
       style: "mapbox://styles/mapbox/streets-v11",
       zoom: 12,
     });
-    setMap(map);
-  }, []);
+    _map.current.on("load", (evt) => {
+      evt.target?.addSource("route", {
+        type: "geojson",
+        data: {
+          type: "Feature",
+          properties: {},
+          geometry: {
+            type: "LineString",
+            coordinates: [],
+          },
+        },
+      });
+
+      evt.target.addLayer({
+        id: "route",
+        type: "line",
+        source: "route",
+        layout: {
+          "line-join": "round",
+          "line-cap": "round",
+        },
+        paint: {
+          "line-color": "#f88",
+          "line-width": 11,
+        },
+      });
+      setMapLoad(true);
+    });
+  });
 
   const lat = router.query.lat;
   const lng = router.query.lng;
+
   useEffect(() => {
-    if (!map || !lat || !lng) return;
-    map.flyTo({
+    if (!_map.current?.loaded() || !lat || !lng) return;
+    _map.current.flyTo({
       center: [+lng, +lat],
       zoom: 15,
     });
-  }, [lat, lng, map]);
+  }, [lat, lng, _map.current]);
 
   useEffect(() => {
-    if (!map) return;
-    vehicles.forEach((vehicle) => {
-      const marker = new mapboxgl.Marker({
-        draggable: false,
-      })
-        .setLngLat(vehicle.latLng)
-        .addTo(map);
-      marker.setPopup(
-        new mapboxgl.Popup({
-          closeOnClick: false,
-        })
-          .setHTML(
-            `<div className="flex flex-col">
-                <div className="font-bold text-xl">${vehicle.name}</div>
-                <div className="stat-desc">${vehicle.model}</div> 
-                <div className="stat-desc">21% more than last month</div> 
-              </div>`
-          )
-          .setLngLat(vehicle.latLng)
-      );
+    if (!_map.current || !mapLoad) return;
+    const coords = points.map((p) => [p.lat, p.lng]);
+
+    // @ts-ignore
+    _map.current.getSource("route")?.setData({
+      type: "Feature",
+      properties: {},
+      geometry: {
+        type: "LineString",
+        coordinates: coords,
+      },
     });
-  }, [map, vehicles]);
+  }, [_map.current, mapLoad, points]);
 
   return (
     <div className="w-full md:h-screen h-[95vh] sticky  overflow-hidden">
