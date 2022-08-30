@@ -5,9 +5,12 @@ import useSWR from "swr";
 import { fetcher } from "../utils";
 import { Points } from "./types";
 
-export function usePoints(id?: string | string[] | undefined) {
+export function usePoints(
+  id?: string | string[] | undefined,
+  routes?: string | string[] | undefined
+) {
   const { data, error } = useSWR<Points[], AxiosError>(
-    id && `/api/tracker/${id}`,
+    id && `/api/tracker/${id}?routes=${routes}`,
     fetcher
   );
 

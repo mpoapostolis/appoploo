@@ -4,8 +4,17 @@ import { Points, usePoints } from "../../lib/points";
 import { format } from "date-fns";
 
 export default function TimeLineItem(props: Points) {
+  const router = useRouter();
+  const replace = (s: string) =>
+    router.replace({
+      query: {
+        ...router.query,
+        coords: s,
+      },
+    });
   return (
     <div
+      onClick={() => replace(`${props.lat},${props.lng}`)}
       role="button"
       className="grid items-start hover:border-l-4 px-5 hover:px-4  overflow-hidden border-base-content  grid-cols-[auto_auto_1fr] pb-10 gap-x-8 relative"
     >
@@ -47,7 +56,8 @@ export function TimeLine() {
       },
     });
   };
-  const { data: points } = usePoints(q.id);
+
+  const { data: points } = usePoints(q.id, q.routes);
 
   return (
     <div className="p-4 hidden xl:block ">

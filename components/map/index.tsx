@@ -1,8 +1,6 @@
-import mapboxgl from "mapbox-gl";
+import mapboxgl, { LngLat, LngLatBoundsLike } from "mapbox-gl";
 import { ReactNode, useEffect, useRef, useState } from "react";
 import "mapbox-gl/dist/mapbox-gl.css";
-import { VehicleCard } from "../vehicleCard";
-import { useVehicles } from "../../lib/vehicles";
 import { useRouter } from "next/router";
 import { usePoints } from "../../lib/points";
 
@@ -12,14 +10,17 @@ mapboxgl.accessToken =
 export const Map = () => {
   const router = useRouter();
   const [mapLoad, setMapLoad] = useState(false);
-  const { data: points } = usePoints(router.query.id);
+  const q = useRouter().query;
+  const { data: points } = usePoints(q.id, q.routes);
   const _map = useRef<mapboxgl.Map>();
+  const marker = useRef<mapboxgl.Marker>();
 
   useEffect(() => {
     if (_map.current) return;
     _map.current = new mapboxgl.Map({
       container: "map",
       pitch: 0, // pitch in degrees
+
       center: {
         lng: 23.5061835,
         lat: 38.0,
@@ -28,6 +29,7 @@ export const Map = () => {
       style: "mapbox://styles/mapbox/streets-v11",
       zoom: 12,
     });
+
     _map.current.on("load", (evt) => {
       evt.target?.addSource("route", {
         type: "geojson",
@@ -51,10 +53,13 @@ export const Map = () => {
         },
         paint: {
           "line-color": "#f88",
-          "line-width": 11,
+          "line-width": 3,
         },
       });
       setMapLoad(true);
+      marker.current = new mapboxgl.Marker()
+        .setLngLat([30.5, 50.5])
+        .addTo(evt.target);
     });
   });
 
@@ -69,6 +74,21 @@ export const Map = () => {
     });
   }, [lat, lng, _map.current]);
 
+  const lastPos = points.at(-1);
+  useEffect(() => {
+    if (!q.coords && lastPos)
+      marker.current?.setLngLat([lastPos?.lng, lastPos?.lat]);
+
+    if (!_map.current?.loaded()) return;
+    const lngLat = `${q.coords}`?.split(",")?.map(Number) as [number, number];
+    marker.current?.setLngLat(lngLat);
+    _map.current.flyTo({
+      center: [lngLat[0], lngLat[1]],
+      zoom: 9,
+      speed: 0.5,
+    });
+  }, [lat, lng, _map.current, q.coords, lastPos]);
+
   useEffect(() => {
     if (!_map.current || !mapLoad) return;
     const coords = points.map((p) => [p.lat, p.lng]);
@@ -81,6 +101,11 @@ export const Map = () => {
         type: "LineString",
         coordinates: coords,
       },
+    });
+
+    if (coords.length < 2) return;
+    _map?.current?.fitBounds(coords as LngLatBoundsLike, {
+      zoom: 7.5,
     });
   }, [_map.current, mapLoad, points]);
 
