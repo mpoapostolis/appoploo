@@ -1,4 +1,5 @@
 import { NextApiRequest, NextApiResponse } from "next";
+import { createUser, login, logout } from "../../lib/users/api";
 import { withSessionRoute } from "../../lib/withSession";
 
 export default withSessionRoute(loginRoute);
@@ -6,31 +7,21 @@ export default withSessionRoute(loginRoute);
 async function loginRoute(req: NextApiRequest, res: NextApiResponse) {
   const { email, password } = req.body;
 
-  switch (req.query.type) {
-    case "login":
-      req.session.user = {
-        id: 230,
-        admin: true,
-      };
-      await req.session.save();
-      res.redirect(307, "/tracking");
+  switch (req.method) {
+    case "POST":
+      switch (req.query.type) {
+        case "login":
+          return login(req, res);
 
-      break;
+        case "logout":
+          return logout(req, res);
 
-    case "logout":
-      await req.session.destroy();
-      res.writeHead(302, { Location: "/login" }).end();
-      break;
-
-    case "register":
-      req.session.user = {
-        id: 230,
-        admin: true,
-      };
-      await req.session.save();
-      res.json({ ok: true });
+        case "register":
+          return createUser(req, res);
+      }
 
     default:
+      res.status(405).send("No method allowed");
       break;
   }
 }

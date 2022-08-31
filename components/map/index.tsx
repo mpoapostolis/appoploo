@@ -73,8 +73,8 @@ export const Map = () => {
       zoom: 15,
     });
   }, [lat, lng, _map.current]);
-
   const lastPos = points.at(-1);
+
   useEffect(() => {
     if (!q.coords && lastPos)
       marker.current?.setLngLat([lastPos?.lng, lastPos?.lat]);
@@ -82,11 +82,6 @@ export const Map = () => {
     if (!_map.current?.loaded()) return;
     const lngLat = `${q.coords}`?.split(",")?.map(Number) as [number, number];
     marker.current?.setLngLat(lngLat);
-    _map.current.flyTo({
-      center: [lngLat[0], lngLat[1]],
-      zoom: 9,
-      speed: 0.5,
-    });
   }, [lat, lng, _map.current, q.coords, lastPos]);
 
   useEffect(() => {

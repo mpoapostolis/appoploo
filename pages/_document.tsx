@@ -4,6 +4,7 @@ export default function Document() {
   return (
     <Html data-theme="dark">
       <Head />
+
       <body>
         <Main />
         <NextScript />

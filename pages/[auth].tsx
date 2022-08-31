@@ -1,21 +1,40 @@
 import { useState } from "react";
-import axios from "axios";
 import clsx from "clsx";
 import { Input } from "../components/input";
 import { Button } from "../components/button";
+import { useRouter } from "next/router";
+import Link from "next/link";
+import useMutation from "../hooks/useMutation";
+import { login, register } from "../lib/users";
 
 export default function Login() {
   const [userName, setUsername] = useState("");
   const [password, setPassword] = useState("");
-  const [type, setType] = useState<"login" | "register">("login");
-  const [err, setErr] = useState<Record<string, string>>({});
-  const [load, setLoad] = useState(false);
-  const login = () =>
-    axios.post("/api/auth", {
-      username: "admin",
-      password: "admin",
-      type: "login",
-    });
+  const [passwordConfirmation, setPasswordConfirmation] = useState("");
+  const router = useRouter();
+  const auth = router.query.auth;
+  const [err, _setErr] = useState<Record<string, string>>({});
+
+  const setErr = (obj: Record<string, any>) => {
+    const [k] = Object.keys(obj);
+    if (k === "userName") setUsername("");
+    if (k === "password") setPassword("");
+    if (k === "passwordConfirmation") setPassword("");
+    _setErr(obj);
+  };
+
+  const clearErr = () => setErr({});
+  const goHome = () => router.push("/");
+
+  const [_login, { loading }] = useMutation(login, [], {
+    onError: setErr,
+    onSuccess: goHome,
+  });
+
+  const [_register, { loading: rLoading }] = useMutation(register, [], {
+    onError: setErr,
+    onSuccess: goHome,
+  });
 
   return (
     <>
@@ -34,26 +53,16 @@ export default function Login() {
               Appoploo
             </h1>
             <form
-              method="POST"
-              action="/api/auth?type=login"
               onSubmit={(evt) => {
-                // evt.preventDefault();
-                // setErr({});
-                // if (!userName || !password) return;
-                // setLoad(true);
-                // login()
-                //   .then((d) => {})
-                //   .catch((reason: AxiosError) => {
-                //     // const { key, msg } = reason.response?.data;
-                //     // if (key === "userName") setUsername("");
-                //     // if (key === "password") setPassword("");
-                //     // setErr({ [key]: msg });
-                //   })
-                //   .finally(() => setLoad(false));
+                evt.preventDefault();
+                if (auth === "register")
+                  _register(userName, password, passwordConfirmation);
+                _login(userName, password);
               }}
               className="sm:w-2/3 w-full px-4 lg:px-0 mx-auto"
             >
               <Input
+                onFocus={clearErr}
                 label=""
                 onChange={(evt) => setUsername(evt.currentTarget.value)}
                 type="userName"
@@ -67,6 +76,7 @@ export default function Login() {
                 })}
               />
               <Input
+                onFocus={clearErr}
                 label=""
                 onChange={(evt) => setPassword(evt.currentTarget.value)}
                 className={clsx({
@@ -79,25 +89,31 @@ export default function Login() {
                 value={password}
                 placeholder={err.password ?? "Password"}
               />
-              {type === "register" && (
+              {auth === "register" && (
                 <Input
+                  onFocus={clearErr}
                   label=""
-                  onChange={(evt) => setPassword(evt.currentTarget.value)}
+                  onChange={(evt) =>
+                    setPasswordConfirmation(evt.currentTarget.value)
+                  }
                   className={clsx({
                     "border-red-400 placeholder-red-400 text-red-400":
-                      err.password,
+                      err.passwordConfirmation,
                   })}
                   type="password"
                   name="repeat-password"
                   id="repeat-password"
-                  value={password}
-                  placeholder={err.password ?? "Repeat password"}
+                  value={passwordConfirmation}
+                  placeholder={err.passwordConfirmation ?? "Repeat password"}
                 />
               )}
               <div className="divider"></div>
-              <div className="pb-2 pt-4">
-                <Button loading={load} className="btn  w-full btn-xl">
-                  {type === "register" ? "Register" : "Login"}
+              <div className="pb-2">
+                <Button
+                  loading={loading || rLoading}
+                  className="btn  w-full btn-xl"
+                >
+                  {auth === "register" ? "Register" : "Login"}
                 </Button>
               </div>
               <div className="p-4 text-center right-0 left-0 flex justify-center space-x-4 mt-16 lg:hidden ">
@@ -135,16 +151,20 @@ export default function Login() {
                   </svg>
                 </a>
               </div>
-              <div
-                role="button"
-                onClick={() => setType(type === "login" ? "register" : "login")}
-                className="text-right text-sm text-gray-400 w-full mt-3"
-              >
-                {type === "register"
-                  ? `Already have an account login`
-                  : `Don\`t have an account yet? Sign Up`}
-              </div>
+              <Link href={auth === "register" ? "/login" : "/register"}>
+                <a
+                  role="button"
+                  className="text-right text-sm text-gray-400 w-full mt-2 block"
+                >
+                  {auth === "register"
+                    ? `Already have an account login`
+                    : `Don\`t have an account yet? Sign Up`}
+                </a>
+              </Link>
             </form>
+            {err.msg && (
+              <span className="text-red-500 label-text mt-4">{err.msg}</span>
+            )}
           </div>
         </div>
       </section>
