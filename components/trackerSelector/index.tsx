@@ -1,9 +1,13 @@
 import clsx from "clsx";
 import { useRouter } from "next/router";
+import { useTrackers } from "../../lib/tracker";
+import tracker from "../../pages/api/tracker";
 
-export default function VehicleSelector() {
+export function TrackerSelector() {
   const router = useRouter();
+  const { data: trackers } = useTrackers();
   const q = router.query;
+
   const push = (obj: Record<string, any>) => {
     router.push({
       query: {
@@ -14,26 +18,32 @@ export default function VehicleSelector() {
   };
 
   return (
-    <div className="grid grid-cols-2  w-full gap-x-0.5">
+    <div
+      className={clsx("grid  w-full gap-x-0.5", {
+        "grid-cols-2": q.IMEI,
+      })}
+    >
       <select
-        value={q.id}
+        value={q.IMEI}
         onChange={(evt) => {
-          const id =
+          const IMEI =
             +evt.currentTarget.value === -1 ? null : evt.currentTarget.value;
 
           push({
-            id,
-            routes: id ? q.routes : null,
+            IMEI,
+            routes: IMEI ? q.routes : null,
           });
         }}
         className={clsx(
           "select  focus:outline-none rounded-r-none bg-base-300 rounded-l-lg w-full",
-          { "rounded-r-xl": !q.id }
+          { "rounded-r-xl": !q.IMEI }
         )}
       >
         <option value={-1}>All Vehicles</option>
-        <option value={1}>Han Solo</option>
-        <option value={2}>Greedo</option>
+
+        {trackers.map((t) => (
+          <option value={t.IMEI}>track: {t.name ?? t.IMEI}</option>
+        ))}
       </select>
       <select
         value={q.routes}
@@ -45,7 +55,7 @@ export default function VehicleSelector() {
         className={clsx(
           "select focus:outline-none bg-base-300 rounded-l-none rounded-r-lg w-full",
           {
-            hidden: !q.id,
+            hidden: !q.IMEI,
           }
         )}
       >

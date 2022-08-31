@@ -19,7 +19,6 @@ export async function createDeviceTracker(
   const body = await schema.validate(req.body);
   const err = getErrors(body);
   if (err) return res.status(400).json(err);
-  console.log(body);
   const db = await myDb();
   await db.collection("trackers").insertOne({
     userId: new ObjectId(body.userId),
@@ -30,12 +29,19 @@ export async function createDeviceTracker(
 }
 
 export async function getTracekrs(req: NextApiRequest, res: NextApiResponse) {
-  if (!req.session?.user?.admin)
-    return res.status(401).send("401 Unauthorized");
+  const user = req.session.user;
+  if (!user) return res.status(401).send("401 Unauthorized");
   const db = await myDb();
+  const isAdmin = user.admin;
+  const match = isAdmin
+    ? {}
+    : {
+        userId: new ObjectId(user.id),
+      };
   const points = await db
     .collection("trackers")
     .aggregate([
+      { $match: match },
       {
         $lookup: {
           from: "users",

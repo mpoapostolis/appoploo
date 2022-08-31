@@ -9,8 +9,11 @@ export default function Page() {
 export const getServerSideProps: GetServerSideProps = withSessionSsr(
   async function getServerSideProps({ req }) {
     const user = req.session.user;
+    const q = "";
     let destination = "/login";
-    if (user) destination = "/tracking";
+    if (user) {
+      destination = "/tracking";
+    }
     if (user?.admin) destination = "/admin";
     return {
       redirect: {

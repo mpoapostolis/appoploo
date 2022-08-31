@@ -12,6 +12,7 @@ export async function getPoints(req: NextApiRequest, res: NextApiResponse) {
     .collection("points")
     .find({
       userId: new ObjectId(req.session.user.id),
+      trackerIMEI: req.query.IMEI,
       time: { $gt: above },
     })
     .toArray();

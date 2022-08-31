@@ -1,10 +1,10 @@
 import clsx from "clsx";
 import { NextPage } from "next";
-import { Map } from "../../components/map";
+import { MyMap } from "../../components/map";
 import { TimeLine } from "../../components/timeline";
 import { withSessionSsr } from "../../lib/withSession";
 
-const Home: NextPage = () => {
+const Home: NextPage = (props) => {
   return (
     <div
       className={clsx(
@@ -12,7 +12,7 @@ const Home: NextPage = () => {
       )}
     >
       <TimeLine />
-      <Map />
+      <MyMap />
     </div>
   );
 };

@@ -4,14 +4,13 @@ import { fetcher } from "../utils";
 import { Tracker } from "./types";
 
 export function useTrackers() {
-  const { data, error } = useSWR<Tracker[], AxiosError>(
+  const { data, error, isValidating } = useSWR<Tracker[], AxiosError>(
     `/api/tracker`,
     fetcher
   );
-
   return {
     data: data ?? [],
-    isLoading: !error && !data,
+    isLoading: !error && !data && !isValidating,
     isError: error,
   };
 }

@@ -2,7 +2,8 @@ import clsx from "clsx";
 import { useRouter } from "next/router";
 import { Points, usePoints } from "../../lib/points";
 import { format } from "date-fns";
-import VehicleSelector from "../vehicleSelector";
+import { TrackerSelector } from "../trackerSelector";
+import { Loading } from "../Loading";
 
 export default function TimeLineItem(props: Points) {
   const router = useRouter();
@@ -15,7 +16,7 @@ export default function TimeLineItem(props: Points) {
     });
   return (
     <div
-      onClick={() => replace(`${props.lat},${props.lng}`)}
+      onMouseOver={() => replace(`${props.lat},${props.lng}`)}
       role="button"
       className="grid items-start hover:border-l-4 px-5 hover:px-4  overflow-hidden border-base-content  grid-cols-[auto_auto_1fr] pb-10 gap-x-8 relative"
     >
@@ -49,12 +50,18 @@ export default function TimeLineItem(props: Points) {
 export function TimeLine() {
   const router = useRouter();
   const q = { ...router.query };
+  const replace = (s: string) =>
+    router.replace({
+      query: {
+        ...router.query,
+        coords: s,
+      },
+    });
 
-  const { data: points } = usePoints(q.id, q.routes);
-
+  const { data: points, isLoading } = usePoints(q.IMEI, q.routes);
   return (
     <div className="p-4 hidden xl:block ">
-      <VehicleSelector />
+      <TrackerSelector />
       <div className="stats rounded-lg mt-4 bg-base-300">
         <div className="stat place-items-center">
           <div className="stat-title">Speed</div>
@@ -74,11 +81,27 @@ export function TimeLine() {
           <div className="stat-desc">From January 1st to February 1st</div>
         </div>
       </div>
+      <div className="relative">
+        {isLoading && (
+          <div className="w-full h-[79vh] bg-opacity-20 flex absolute items-center rounded-t-lg justify-center  bg-black z-50">
+            <Loading />
+          </div>
+        )}
 
-      <div className="mt-4 h-[79vh] py-4  rounded-t-lg   overflow-y-auto rounded bg-base-300">
-        {points.map((p) => (
-          <TimeLineItem key={p._id} {...p} />
-        ))}
+        {points.length === 0 && !isLoading && (
+          <div className="w-full h-[79vh]  flex absolute items-center rounded-t-lg justify-center  z-50">
+            <label className="label-text">0 points found</label>
+          </div>
+        )}
+
+        <div
+          onMouseLeave={() => replace(``)}
+          className="mt-4 h-[79vh] py-4 relative  rounded-t-lg   overflow-y-auto rounded bg-base-300"
+        >
+          {points.map((p) => (
+            <TimeLineItem key={p._id} {...p} />
+          ))}
+        </div>
       </div>
     </div>
   );
