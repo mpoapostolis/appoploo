@@ -2,7 +2,6 @@ import clsx from "clsx";
 import { useRouter } from "next/router";
 import { Points, usePoints } from "../../lib/points";
 import { format } from "date-fns";
-import { VehicleCard } from "../vehicleCard";
 import VehicleSelector from "../vehicleSelector";
 
 export default function TimeLineItem(props: Points) {

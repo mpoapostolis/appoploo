@@ -3,4 +3,5 @@ export type Tracker = {
   id: string;
   IMEI: string;
   name: string;
+  owner: string;
 };

@@ -76,8 +76,10 @@ export const Map = () => {
   const lastPos = points.at(-1);
 
   useEffect(() => {
+    if (!marker?.current?.setLngLat) return;
+
     if (!q.coords && lastPos)
-      marker.current?.setLngLat([lastPos?.lng, lastPos?.lat]);
+      marker?.current?.setLngLat([lastPos?.lng, lastPos?.lat]);
 
     if (!_map.current?.loaded()) return;
     const lngLat = `${q.coords}`?.split(",")?.map(Number) as [number, number];

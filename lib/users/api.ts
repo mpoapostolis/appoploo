@@ -52,9 +52,9 @@ export async function login(req: NextApiRequest, res: NextApiResponse) {
     .collection("users")
     .findOne({ userName: body.userName });
   const match = await bcrypt.compareSync(body?.password, user?.password);
-
   if (match && user?._id) {
     req.session.user = {
+      admin: user?.admin,
       id: user?._id.toString(),
     };
     await req.session.save();
@@ -67,4 +67,21 @@ export async function login(req: NextApiRequest, res: NextApiResponse) {
 export async function logout(req: NextApiRequest, res: NextApiResponse) {
   await req.session.destroy();
   return res.writeHead(302, { Location: "/login" }).end();
+}
+
+export async function getUsers(req: NextApiRequest, res: NextApiResponse) {
+  const db = await myDb();
+  const users = await db
+    .collection("users")
+    .find(
+      {},
+      {
+        projection: {
+          _id: 1,
+          userName: 1,
+        },
+      }
+    )
+    .toArray();
+  res.status(200).json(users);
 }

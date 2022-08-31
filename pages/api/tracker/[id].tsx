@@ -2,9 +2,9 @@ import { NextApiRequest, NextApiResponse } from "next";
 import { withSessionRoute } from "../../../lib/withSession";
 import { getPoints } from "../../../lib/points/api";
 
-export default withSessionRoute(vehicles);
+export default withSessionRoute(trackers);
 
-async function vehicles(req: NextApiRequest, res: NextApiResponse) {
+async function trackers(req: NextApiRequest, res: NextApiResponse) {
   switch (req.method) {
     case "GET":
       return getPoints(req, res);
