@@ -13,7 +13,6 @@ export function usePoints(
     id && `/api/tracker/${id}?routes=${routes}`,
     fetcher
   );
-
   return {
     data: data ?? [],
     isLoading: !error && !data,

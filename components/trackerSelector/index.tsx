@@ -42,7 +42,9 @@ export function TrackerSelector() {
         <option value={-1}>All Vehicles</option>
 
         {trackers.map((t) => (
-          <option value={t.IMEI}>track: {t.name ?? t.IMEI}</option>
+          <option key={t.IMEI} value={t.IMEI}>
+            track: {t.name ?? t.IMEI}
+          </option>
         ))}
       </select>
       <select

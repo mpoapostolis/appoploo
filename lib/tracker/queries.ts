@@ -10,7 +10,7 @@ export function useTrackers() {
   );
   return {
     data: data ?? [],
-    isLoading: !error && !data && !isValidating,
+    isLoading: !error && !data,
     isError: error,
   };
 }

@@ -59,6 +59,7 @@ export function TimeLine() {
     });
 
   const { data: points, isLoading } = usePoints(q.IMEI, q.routes);
+
   return (
     <div className="p-4 hidden xl:block ">
       <TrackerSelector />
@@ -82,7 +83,7 @@ export function TimeLine() {
         </div>
       </div>
       <div className="relative">
-        {isLoading && (
+        {isLoading && q.IMEI && (
           <div className="w-full h-[79vh] bg-opacity-20 flex absolute items-center rounded-t-lg justify-center  bg-black z-50">
             <Loading />
           </div>
