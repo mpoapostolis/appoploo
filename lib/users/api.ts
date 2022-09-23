@@ -3,6 +3,8 @@ import { NextApiRequest, NextApiResponse } from "next";
 import * as yup from "yup";
 import { getErrors } from "../yupError";
 import bcrypt from "bcrypt";
+import { surreal } from "../surreal";
+import { User } from "./types";
 const saltRounds = 10;
 
 let schema = yup.object().shape({
@@ -24,15 +26,22 @@ export async function createUser(req: NextApiRequest, res: NextApiResponse) {
   if (err) return res.status(400).json(err);
   const { password, passwordConfirmation, ...rest } = body;
   const _password = await bcrypt.hash(password, saltRounds);
-  const db = await myDb();
-  const id = await db
-    .collection("users")
-    .insertOne({ ...rest, password: _password });
-  req.session.user = {
-    id: id.insertedId.toString(),
-  };
-  await req.session.save();
-  res.status(201).send("ok");
+
+  await surreal
+    .create<User>(`users:${body.userName}`)
+    .set({ ...rest, password: _password })
+    .then(async (user) => {
+      const id = user?.result?.at(0)?.id;
+      if (!id) throw "User not created";
+      req.session.user = {
+        id: id,
+      };
+      await req.session.save();
+      res.status(201).send("ok");
+    })
+    .catch((err) => {
+      res.status(400).json({ message: err.message });
+    });
 }
 
 let loginSchema = yup.object().shape({
@@ -47,15 +56,19 @@ export async function login(req: NextApiRequest, res: NextApiResponse) {
   const err = getErrors(body);
   if (err) return res.status(400).json(err);
 
-  const db = await myDb();
-  const user = await db
-    .collection("users")
-    .findOne({ userName: body.userName });
-  const match = await bcrypt.compareSync(body?.password, user?.password);
-  if (match && user?._id) {
+  const user = await surreal
+    .select<User>("*")
+    .from(`users:${body.userName}`)
+    .where();
+  if (user?.result?.length == 0)
+    return res.status(400).json({ message: "User not found" });
+  const u = user?.result?.at(0) as User;
+
+  const match = await bcrypt.compareSync(body?.password, u?.password ?? "");
+  if (match && u?.id) {
     req.session.user = {
-      admin: user?.admin,
-      id: user?._id.toString(),
+      admin: u?.admin,
+      id: u?.id,
     };
     await req.session.save();
     res.status(200).send("ok");
