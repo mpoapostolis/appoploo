@@ -1,5 +1,5 @@
 export type Points = {
-  _id: string;
+  createdAt: Date;
   id: string;
   event: string;
   desc: string;

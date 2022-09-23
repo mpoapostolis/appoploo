@@ -7,10 +7,7 @@ const Home: NextPage = () => {
       <h1 className="label font-bold text-lg "> Create new Tracker device</h1>
       <div className="divider"></div>
       <form
-        onSubmit={(evt) => {
-          // evt.preventDefault();
-          // console.log(evt.eventPhase);
-        }}
+        onSubmit={(evt) => {}}
         action="/api/tracker"
         method="POST"
         className="max-w-md w-full"

@@ -28,10 +28,10 @@ function isEmpty(obj: Record<string, any>) {
   return Object.keys(obj).length === 0;
 }
 
-function objToQuery(obj: any) {
+function objToQuery(obj: any, joiner = ",") {
   return Object.keys(obj)
     .map((key) => `${key}='${obj[key]}'`)
-    .join(", ");
+    .join(` ${joiner} `);
 }
 
 async function f<T>(raw: string, conf: Conf) {
@@ -53,27 +53,9 @@ async function f<T>(raw: string, conf: Conf) {
   });
 
   const data = (await res.json()) as SurrealType<T>;
-  return data.at(0);
+
+  return data?.at(0);
 }
-
-[
-  {
-    time: "373.818µs",
-    status: "OK",
-    result: [
-      {
-        id: "users:mpoapostolis",
-      },
-    ],
-  },
-];
-
-type Create<T> = {
-  time: string;
-  status: string;
-  result: T & { id: string }[];
-};
-[];
 
 export class Surreal {
   conf: Conf;
@@ -92,7 +74,8 @@ export class Surreal {
         return {
           where: async (obj: Record<string, any> = {}) => {
             const selected = selections === "*" ? "*" : selections.join(", ");
-            const where = isEmpty(obj) ? "" : `WHERE ${objToQuery(obj)}`;
+            const where = isEmpty(obj) ? "" : `WHERE ${objToQuery(obj, "and")}`;
+
             return await f<T>(
               `SELECT ${selected}  FROM ${table} ${where}`,
               this.conf
@@ -106,8 +89,12 @@ export class Surreal {
   create<T = unknown>(table: string) {
     return {
       set: async (obj: Record<string, any> = {}) => {
-        const set = isEmpty(obj) ? "" : "SET " + objToQuery(obj);
-        return await f<T>(`CREATE ${table} ${set}`, this.conf);
+        const set = isEmpty(obj)
+          ? ""
+          : "SET " + objToQuery(obj) + ", createdAt = time::now()";
+        return await f<T>(`CREATE ${table} ${set}`, this.conf).catch(
+          console.error
+        );
       },
     };
   }
@@ -116,15 +103,19 @@ export class Surreal {
     let where = "";
     return {
       set: async (setObj: Record<string, any> = {}) => {
-        const set = isEmpty(setObj) ? "" : "SET " + objToQuery(setObj);
+        const set = isEmpty(setObj)
+          ? ""
+          : "SET " + objToQuery(setObj) + ", modifiedAt = time::now()";
         return await f<T>(`UPDATE ${table} ${set}`, this.conf);
       },
 
       where: (whereObj: Record<string, any> = {}) => {
-        where = isEmpty(whereObj) ? "" : `WHERE ${objToQuery(whereObj)}`;
+        where = isEmpty(whereObj) ? "" : `WHERE ${objToQuery(whereObj, "and")}`;
         return {
           set: async (setObj: Record<string, any> = {}) => {
-            const set = isEmpty(setObj) ? "" : "SET " + objToQuery(setObj);
+            const set = isEmpty(setObj)
+              ? ""
+              : "SET " + objToQuery(setObj) + ", modifiedAt = time::now()";
             return await f<T>(`UPDATE ${table} ${where} ${set}`, this.conf);
           },
         };
@@ -135,7 +126,9 @@ export class Surreal {
   delete<T = unknown>(table: string): Record<string, any> {
     return {
       where: async (whereObj: Record<string, any> = {}) => {
-        const where = isEmpty(whereObj) ? "" : `WHERE ${objToQuery(whereObj)}`;
+        const where = isEmpty(whereObj)
+          ? ""
+          : `WHERE ${objToQuery(whereObj, "and")}`;
         return await f<T>(`DELETE ${table} ${where}`, this.conf);
       },
     };

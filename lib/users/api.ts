@@ -1,4 +1,3 @@
-import myDb from "../../helpers/mongo";
 import { NextApiRequest, NextApiResponse } from "next";
 import * as yup from "yup";
 import { getErrors } from "../yupError";
@@ -13,9 +12,6 @@ let schema = yup.object().shape({
   passwordConfirmation: yup
     .string()
     .oneOf([yup.ref("password"), null], "Passwords must match"),
-  createdOn: yup.date().default(function () {
-    return new Date();
-  }),
 });
 
 export async function createUser(req: NextApiRequest, res: NextApiResponse) {
@@ -83,18 +79,11 @@ export async function logout(req: NextApiRequest, res: NextApiResponse) {
 }
 
 export async function getUsers(req: NextApiRequest, res: NextApiResponse) {
-  const db = await myDb();
-  const users = await db
-    .collection("users")
-    .find(
-      {},
-      {
-        projection: {
-          _id: 1,
-          userName: 1,
-        },
-      }
-    )
-    .toArray();
-  res.status(200).json(users);
+  if (!req.session?.user?.admin)
+    return res.status(401).send("401 Unauthorized");
+  const results = await surreal
+    .select(["id", "userName"])
+    .from("users")
+    .where({});
+  res.status(200).json(results?.result);
 }

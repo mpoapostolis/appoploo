@@ -14,17 +14,18 @@ export default function TimeLineItem(props: Points) {
         coords: s,
       },
     });
+  const d = new Date(props.createdAt);
   return (
     <div
-      onMouseOver={() => replace(`${props.lat},${props.lng}`)}
+      onMouseOver={() => replace(`${props.lng},${props.lat}`)}
       role="button"
       className="grid items-start hover:border-l-4 px-5 hover:px-4  overflow-hidden border-base-content  grid-cols-[auto_auto_1fr] pb-10 gap-x-8 relative"
     >
       {/* <div className="border-r-4  border-base-100 absolute h-full left-[101px]"></div> */}
       <time className="leading-5 w-full  text-clip flex-col text-sm font-normal  text-gray-400 border-opacity-10 border-white dark:text-gray-500">
-        <strong>{format(props.time, "dd/mm/yy")}</strong>
+        <strong>{format(d, "d MMM Y")}</strong>
         <br />
-        <span>{format(props.time, "hh:mm")}</span>
+        <span>{format(d, "hh:mm")}</span>
       </time>
 
       <div className="relative">
@@ -58,7 +59,7 @@ export function TimeLine() {
       },
     });
 
-  const { data: points, isLoading } = usePoints(q.IMEI, q.routes);
+  const { data: points, isLoading } = usePoints(q.IMEI, q.days);
 
   return (
     <div className="p-4 hidden xl:block ">
@@ -100,7 +101,7 @@ export function TimeLine() {
           className="mt-4 h-[79vh] py-4 relative  rounded-t-lg   overflow-y-auto rounded bg-base-300"
         >
           {points.map((p) => (
-            <TimeLineItem key={p._id} {...p} />
+            <TimeLineItem key={p.id} {...p} />
           ))}
         </div>
       </div>

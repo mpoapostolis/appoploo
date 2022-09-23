@@ -31,7 +31,7 @@ export function TrackerSelector() {
 
           push({
             IMEI,
-            routes: IMEI ? q.routes : null,
+            days: IMEI ? q.days : null,
           });
         }}
         className={clsx(
@@ -43,15 +43,15 @@ export function TrackerSelector() {
 
         {trackers.map((t) => (
           <option key={t.IMEI} value={t.IMEI}>
-            track: {t.name ?? t.IMEI}
+            Device: {t.name ?? t.IMEI}
           </option>
         ))}
       </select>
       <select
-        value={q.routes}
+        value={q.days}
         onChange={(evt) => {
           push({
-            routes: evt.currentTarget.value,
+            days: evt.currentTarget.value,
           });
         }}
         className={clsx(
@@ -62,17 +62,17 @@ export function TrackerSelector() {
         )}
       >
         <option disabled selected>
-          show routes from last n days
+          show days from last n days
         </option>
-        <option value={1}>Last 1 day routes</option>
-        <option value={2}>Last 2 days routes</option>
-        <option value={3}>Last 3 days routes</option>
-        <option value={7}>Last 1 week routes</option>
-        <option value={14}>Last 2 weeks routes</option>
-        <option value={21}>Last 3 weeks routes</option>
-        <option value={30}>Last 1 month routes</option>
-        <option value={60}>Last 2 months routes</option>
-        <option value={90}>Last 3 months routes</option>
+        <option value={1}>Last 1 day </option>
+        <option value={2}>Last 2 days </option>
+        <option value={3}>Last 3 days </option>
+        <option value={7}>Last 1 week </option>
+        <option value={14}>Last 2 weeks </option>
+        <option value={21}>Last 3 weeks </option>
+        <option value={30}>Last 1 month </option>
+        <option value={60}>Last 2 months </option>
+        <option value={90}>Last 3 months </option>
       </select>
     </div>
   );

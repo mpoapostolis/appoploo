@@ -26,18 +26,16 @@ const Home: NextPage = () => {
         <table className="table table-zebra w-full">
           <thead>
             <tr>
-              <th>No</th>
-              <th>Name</th>
-              <th>IMEI</th>
+              <th>Device IMEI</th>
+              <th>Owner</th>
               <th>actions</th>
             </tr>
           </thead>
           <tbody>
             {trackers.map((tracker, idx) => (
               <tr key={tracker._id}>
-                <th>{idx}</th>
-                <td>{tracker.owner}</td>
                 <td>{tracker.IMEI}</td>
+                <td>{tracker.owner}</td>
                 <td>
                   <img
                     role="button"
@@ -64,7 +62,6 @@ const Home: NextPage = () => {
               evt.preventDefault();
               const IMEI = evt.currentTarget.IMEI.value;
               const userId = evt.currentTarget.userId.value;
-              console.log(evt.currentTarget.userId.value);
               mutate(userId, IMEI);
               toggleModal();
               evt.currentTarget.reset();
